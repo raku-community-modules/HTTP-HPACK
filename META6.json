@@ -1,18 +1,25 @@
 {
-  "name": "HTTP::HPACK",
-  "description": "Implementation of RFC 7541 HPACK: Header Compression for HTTP/2",
-  "version": "1.0.1",
-  "perl": "6.c",
+  "auth": "zef:raku-community-modules",
   "authors": [
     "Jonathan Worthington"
   ],
-  "auth": "zef:jnthn",
-  "depends": [],
-  "build-depends": [],
-  "test-depends": [],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "Implementation of RFC 7541 HPACK: Header Compression for HTTP/2",
+  "license": "Artistic-2.0",
+  "name": "HTTP::HPACK",
+  "perl": "6.c",
   "provides": {
     "HTTP::HPACK": "lib/HTTP/HPACK.rakumod"
   },
-  "license": "Artistic-2.0",
-  "source-url": "https://github.com/jnthn/raku-http-hpack.git"
+  "resources": [
+  ],
+  "source-url": "https://github.com/raku-community-modules/HTTP-HPACK.git",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "1.0.1"
 }
