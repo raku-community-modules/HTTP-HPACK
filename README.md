@@ -83,7 +83,7 @@ Jonathan Worthington
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright 2016 - 2024 Jonathan Worthington
+Copyright 2016 - 2023 Jonathan Worthington
 
 Copyright 2024 Raku Community
 

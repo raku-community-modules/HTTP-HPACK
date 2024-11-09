@@ -1,4 +1,6 @@
 Revision history for HTTP-HPACK
 
 {{$NEXT}}
-    - Initial version in the zef ecosystem
+
+1.0.2  2024-11-09T12:07:01+01:00
+    - Initial version as a Raku Community module
