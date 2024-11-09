@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/lizmat/HTTP-HPACK/actions/workflows/test.yml/badge.svg)](https://github.com/lizmat/HTTP-HPACK/actions)
+[![Actions Status](https://github.com/raku-community-modules/HTTP-HPACK/actions/workflows/linux.yml/badge.svg)](https://github.com/raku-community-modules/HTTP-HPACK/actions) [![Actions Status](https://github.com/raku-community-modules/HTTP-HPACK/actions/workflows/macos.yml/badge.svg)](https://github.com/raku-community-modules/HTTP-HPACK/actions)
 
 NAME
 ====
