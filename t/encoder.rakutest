@@ -1,0 +1,29 @@
+use Test;
+use HTTP::HPACK :internal;
+
+#
+# Tests for the HTTP::HPACK::Encoder module.
+#
+# The majority of specification testing happens in examples.
+# The following tests target the API of the module.
+#
+
+sub header($name, $value, $indexing = HTTP::HPACK::Indexing::Indexed) {
+    HTTP::HPACK::Header.new(:$name, :$value, :$indexing)
+}
+
+# Test custom signature behavior for the encode-headers method.
+ok HTTP::HPACK::Encoder.new.encode-headers([
+    header('custom-key', 'custom-header'),
+    header('custom-key2', 'custom-header2')
+    ]).so,
+'Encoder.encode-headers accepts array of HTTP::HPACK::Header objects';
+
+dies-ok {
+    HTTP::HPACK::Encoder.new.encode-headers(
+    [ "Not a header", "me neither" ]),
+    Buf.new(0x40, 0x0a, 0x63)
+},
+'Encoder.encode-headers throws on bad input';
+
+done-testing

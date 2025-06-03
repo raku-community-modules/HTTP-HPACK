@@ -376,7 +376,8 @@ class HTTP::HPACK::Decoder does HTTP::HPACK::Tables {
 class HTTP::HPACK::Encoder does HTTP::HPACK::Tables {
     has Bool $.huffman = False;
 
-    method encode-headers(@headers where all(@headers) ~~ HTTP::HPACK::Header) returns Blob {
+    # Implements constraint: `@headers where all(@headers) ~~ HTTP::HPACK::Header` but in a way compatible with the windows all regression.
+    method encode-headers(@headers where [and] @headers.map(* ~~ HTTP::HPACK::Header)) returns Blob {
         my $result = Buf.new;
         for @headers -> $header {
             # Search tables for a matching entry.
