@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/raku-community-modules/HTTP-HPACK/actions/workflows/linux.yml/badge.svg)](https://github.com/raku-community-modules/HTTP-HPACK/actions) [![Actions Status](https://github.com/raku-community-modules/HTTP-HPACK/actions/workflows/macos.yml/badge.svg)](https://github.com/raku-community-modules/HTTP-HPACK/actions)
+[![Actions Status](https://github.com/raku-community-modules/HTTP-HPACK/actions/workflows/linux.yml/badge.svg)](https://github.com/raku-community-modules/HTTP-HPACK/actions) [![Actions Status](https://github.com/raku-community-modules/HTTP-HPACK/actions/workflows/macos.yml/badge.svg)](https://github.com/raku-community-modules/HTTP-HPACK/actions) [![Actions Status](https://github.com/raku-community-modules/HTTP-HPACK/actions/workflows/windows.yml/badge.svg)](https://github.com/raku-community-modules/HTTP-HPACK/actions)
 
 NAME
 ====
@@ -85,7 +85,7 @@ COPYRIGHT AND LICENSE
 
 Copyright 2016 - 2023 Jonathan Worthington
 
-Copyright 2024 Raku Community
+Copyright 2024 - 2025 Raku Community
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

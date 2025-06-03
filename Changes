@@ -1,6 +1,9 @@
 Revision history for HTTP-HPACK
 
 {{$NEXT}}
+    - Fix windows tests, JRaspass++
+    - Some minor code streamlining
+    - Update copyright year
 
 1.0.2  2024-11-09T12:07:01+01:00
     - Initial version as a Raku Community module

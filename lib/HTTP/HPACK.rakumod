@@ -235,8 +235,8 @@ role HTTP::HPACK::Tables {
         }
     }
 
-    method dynamic-table-size() returns Int {
-        [+] @!dynamic-table.map({ 32 + .key.chars + .value.chars })
+    method dynamic-table-size(--> Int:D) {
+        @!dynamic-table.map({ 32 + .key.chars + .value.chars }).sum
     }
 
     method !add-to-dynamic-table(Pair $header) {
@@ -248,9 +248,9 @@ role HTTP::HPACK::Tables {
 
     method !resolve-decoded-index($index) returns Pair {
         if 0 < $index < STATIC_ELEMS + @!dynamic-table.elems {
-            return $index < STATIC_ELEMS
+            $index < STATIC_ELEMS
                 ?? STATIC_TABLE[$index]
-                !! @!dynamic-table[$index - STATIC_ELEMS];
+                !! @!dynamic-table[$index - STATIC_ELEMS]
         }
         else {
             die X::HTTP::HPACK::IndexOutOfRange.new(:$index);
@@ -320,17 +320,17 @@ class HTTP::HPACK::Decoder does HTTP::HPACK::Tables {
                 }
             }
         }
-        return @headers;
+        @headers
     }
 
     method !decode-literal-header-field(Blob $packed, $prefix, int $idx is rw) returns Pair {
         my int $header-index = decode-int($packed, $prefix, $idx);
         if $header-index {
-            return self!resolve-decoded-index($header-index).key => decode-str($packed, $idx);
+            self!resolve-decoded-index($header-index).key => decode-str($packed, $idx)
         }
         else {
             my ($key, $value) = decode-str($packed, $idx) xx 2;
-            return $key => $value;
+            $key => $value
         }
     }
 
@@ -369,7 +369,7 @@ class HTTP::HPACK::Decoder does HTTP::HPACK::Tables {
             $result-buf = $packed.subbuf($blob-offset, $bytes);
             $blob-offset += $bytes;
         }
-        return $result-buf.decode('latin-1');
+        $result-buf.decode('latin-1')
     }
 }
 
@@ -408,7 +408,7 @@ class HTTP::HPACK::Encoder does HTTP::HPACK::Tables {
                 self!encode-str($header.value, $result);
             }
         }
-        return $result;
+        $result
     }
 
     method !encode-str(str $value, $target) {
@@ -461,7 +461,7 @@ sub encode-int(uint $value, int $prefix, $target = Buf.new, int $upper = 0)
         }
         $target.push($cur-value);
     }
-    return $target;
+    $target
 }
 
 sub decode-int(Blob $blob, int $prefix, int $blob-offset is rw) returns uint is export(:internal) {
@@ -477,113 +477,7 @@ sub decode-int(Blob $blob, int $prefix, int $blob-offset is rw) returns uint is 
         }
     }
     $blob-offset++;
-    return $result;
+    $result
 }
 
-=begin pod
-
-=head1 NAME
-
-HTTP::HPACK - Implementation of RFC 7541 HPACK: Header Compression for HTTP/2
-
-=head1 SYNOPSIS
-
-=begin code :lang<raku>
-
-use HTTP::HPACK;
-
-# Decoding:
-my $decoder = HTTP::HPACK::Decoder.new;
-my @headers = $decoder.decode-headers($buf);
-say "{.name}: {.value} ({.indexing})" for @headers;
-
-# Encoding:
-my @headers = 
-  HTTP::HPACK::Header.new(
-    name  => ':method',
-    value => 'GET'
-  ),
-  HTTP::HPACK::Header.new(
-    name     => 'password',
-    value    => 'correcthorsebatterystaple',
-    indexing => HTTP::HPACK::Indexing::NeverIndexed
-  );
-my $encoder = HTTP::HPACK::Encoder.new;
-my $buf = $encoder.encode-headers(@headers);
-
-=end code
-
-=head1 DESCRIPTION
-
-HPACK is the HTTP/2 header compression algorithm. This module
-implements encoding (compression) and decoding (decompression) of
-the HPACK format, as specified in RFC 7541. A HTTP/2 connection
-will typically have an instance of the decoder (to decompress
-incoming headers) and an instance of the encoder (to compress
-outgoing headers).
-
-=head1 Notes on specific features
-
-=head2 Huffman compression
-
-Decoding of headers compressed using the Huffman codes (set out
-in the RFC) takes place automatically. By default, the encoder
-will not apply Huffman compression.  To enable this, construct it
-with the C<huffman> named argument set to C<True>:
-
-=begin code :lang<raku>
-
-my $encoder = HTTP::HPACK::Encoder.new(:huffman);
-
-=end code
-
-=head2 Dynamic table management
-
-The dynamic table size can be limited by passing the
-C<dynamic-table-limit> named argument when constructing either
-the encoder or decoder:
-
-=begin code :lang<raku>
-
-my $decoder = HTTP::HPACK::Decoder.new(dynamic-table-limit => 256);
-
-=end code
-
-It is also possible to introspect the current dynamic table size:
-
-=begin code :lang<raku>
-
-say $decoder.dynamic-table-size;
-
-=end code
-
-The size is computed according to the algorithm in RFC 7541 Section 4.1.
-
-=head1 Thread safety
-
-Instances of HTTP::HPACK::Header are immutable and so safe to share
-and access concurrently. Instances of C<HTTP::HPACK::Decoder> and
-C<HTTP::HPACK::Encoder> are stateful (as a result of the dynamic table),
-and so a given instance may not be used concurrently. This is not a
-practical problem, since headers may only be processed in the order
-they are being received or transmitted anyway.
-
-=head1 Known issues
-
-=item The Huffman code termination handling has not been validated to
-be completely up to specification, and so may fail to signal errors in
-some cases where the Huffman code is terminated in a bogus way.
-
-=head1 AUTHOR
-
-Jonathan Worthington
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 2016 - 2023 Jonathan Worthington
-
-Copyright 2024 Raku Community
-
-This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
-
-=end pod
+# vim: expandtab shiftwidth=4
